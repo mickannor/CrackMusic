@@ -2,6 +2,59 @@ import { Button, StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './components/Home';
+import StackScreen from './components/StackScreen';
+import { AuthSession } from 'expo';
+import axios from 'axios'
+
+const scopesArr = [
+	'user-modify-playback-state','user-read-currently-playing','user-read-playback-state','user-library-modify',
+    'user-library-read','playlist-read-private','playlist-read-collaborative','playlist-modify-public',
+	'playlist-modify-private','user-read-recently-played','user-top-read', 'ugc-image-upload', 'app-remote-control',
+	'streaming', 'user-follow-modify', 'user-follow-read', 'user-read-playback-position', 'user-read-email', 
+	'user-read-private'
+];
+const scopes = scopesArr.join(' ');
+
+
+
+router.get('/api/spotify-credentials', (req, res, next) => {
+  const clientId = process.env.clientId;
+  const clientSecret = process.env.clientSecret;
+  const redirectUri = process.env.redirectUri;
+  const spotifyCredentials = { clientId, clientSecret, redirectUri };
+  res.json(spotifyCredentials);
+});
+
+const getSpotifyCredentials = async () => {
+    const res = await axios.get('/api/spotify-credentials')
+    const spotifyCredentials = res.data
+    return spotifyCredentials
+}
+
+const getAuthorizationCode = async () => {
+	try {
+		const credentials = await getSpotifyCredentials() //we wrote this function above
+		const redirectUrl = AuthSession.makeRedirectUri({
+            scheme: 'scheme2',
+            preferLocalhost: true,
+            isTripleSlashed: true,
+        })
+		const result = await AuthSession.startAsync({
+		authUrl:
+			'https://accounts.spotify.com/authorize' +
+			'?response_type=code' +
+			'&client_id=' +
+			credentials.clientId +
+			(scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+			'&redirect_uri=' +
+			encodeURIComponent(redirectUrl),
+		})
+	} catch (err) {
+		console.error(err)
+	}
+	return result.params.code
+}
+
 
 // function HomeScreen({navigation}) {
 //     return (
@@ -43,9 +96,12 @@ import HomeScreen from './components/Home';
 //     )
 // }
 
+
 const Stack = createNativeStackNavigator();
 
+
 export default function App() {
+    const code = getAuthorizationCode();
     return (
         <NavigationContainer>
             <Stack.Navigator>
@@ -63,6 +119,10 @@ export default function App() {
                         }, 
                     }}
                 />
+                {/* <Stack.Screen
+                    name="Stack"
+                    component={StackScreen}
+                /> */}
                 {/* <Stack.Screen
                     name="Profile"
                     component={ProfileScreen}

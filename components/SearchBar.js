@@ -32,3 +32,18 @@ const styles = StyleSheet.create({
 		backgroundColor: '#eaeaeaa'
 	}
 })
+
+<Stack.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{
+                        title: 'My home',
+                        headerStyle: {
+                            backgroundColor: '#1DB954',
+                        },
+                        headerTintColor: '#000',
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                        }, 
+                    }}
+                />
