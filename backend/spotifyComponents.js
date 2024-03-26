@@ -6,3 +6,4 @@ const componentDidMount = async () => {
       this.setState({ accessTokenAvailable: true });
     }
 }
+
