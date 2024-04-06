@@ -35,7 +35,7 @@ export default function HomeScreen({navigation}) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Text style={{ color: '#1DB954'}}>Home Screen</Text>
-            <Button title="Go to Details" onPress={() => getAuthorizationCode()}/>
+            <Button title="Go to Details" />
         </View>
     )
 }

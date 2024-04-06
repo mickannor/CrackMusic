@@ -1,7 +1,6 @@
 {
     "env": {
         "clientID": "db4013f57fab4cc087802fb9acdc4906",
-        "clientSecret": "65d581d8b0974b7a9e1100e47f50a15f",
-        "redirectUrl": "exp://localhost:8081"
+        "clientSecret": "65d581d8b0974b7a9e1100e47f50a15f"
     }
 }

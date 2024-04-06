@@ -3,58 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './components/Home';
 import StackScreen from './components/StackScreen';
-import { AuthSession } from 'expo';
 import axios from 'axios'
-
-const scopesArr = [
-	'user-modify-playback-state','user-read-currently-playing','user-read-playback-state','user-library-modify',
-    'user-library-read','playlist-read-private','playlist-read-collaborative','playlist-modify-public',
-	'playlist-modify-private','user-read-recently-played','user-top-read', 'ugc-image-upload', 'app-remote-control',
-	'streaming', 'user-follow-modify', 'user-follow-read', 'user-read-playback-position', 'user-read-email', 
-	'user-read-private'
-];
-const scopes = scopesArr.join(' ');
-
-
-
-router.get('/api/spotify-credentials', (req, res, next) => {
-  const clientId = process.env.clientId;
-  const clientSecret = process.env.clientSecret;
-  const redirectUri = process.env.redirectUri;
-  const spotifyCredentials = { clientId, clientSecret, redirectUri };
-  res.json(spotifyCredentials);
-});
-
-const getSpotifyCredentials = async () => {
-    const res = await axios.get('/api/spotify-credentials')
-    const spotifyCredentials = res.data
-    return spotifyCredentials
-}
-
-const getAuthorizationCode = async () => {
-	try {
-		const credentials = await getSpotifyCredentials() //we wrote this function above
-		const redirectUrl = AuthSession.makeRedirectUri({
-            scheme: 'scheme2',
-            preferLocalhost: true,
-            isTripleSlashed: true,
-        })
-		const result = await AuthSession.startAsync({
-		authUrl:
-			'https://accounts.spotify.com/authorize' +
-			'?response_type=code' +
-			'&client_id=' +
-			credentials.clientId +
-			(scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-			'&redirect_uri=' +
-			encodeURIComponent(redirectUrl),
-		})
-	} catch (err) {
-		console.error(err)
-	}
-	return result.params.code
-}
-
+import { getAuthorizationCode } from './backend/getAuthorizationCode';
+import { TouchableOpacity} from 'react-native';
+import * as AuthSession from 'expo-auth-session';
+import { FontAwesome } from '@expo/vector-icons';
 
 // function HomeScreen({navigation}) {
 //     return (
@@ -96,13 +49,214 @@ const getAuthorizationCode = async () => {
 //     )
 // }
 
-
 const Stack = createNativeStackNavigator();
+
+import * as React from 'react';
+import * as WebBrowser from 'expo-web-browser';
+import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
+
+
+WebBrowser.maybeCompleteAuthSession();
+
+// Endpoint
+const discovery = {
+  authorizationEndpoint: 'https://accounts.spotify.com/authorize',
+  tokenEndpoint: 'https://accounts.spotify.com/api/token',
+};
+
+state = {
+	userInfo: null,
+	didError: false
+  };
+  
+
+
+  
+
+  
+
+// return (
+//     <Button
+//       disabled={!request}
+//       title="Login"
+//       onPress={() => {
+//         promptAsync();
+//       }}
+//     />
+//   );
+
+
+
 
 
 export default function App() {
-    const code = getAuthorizationCode();
-    return (
+	// const [request, response, promptAsync] = useAuthRequest(
+	// 	{
+	// 	  clientId: process.env.clientID,
+	// 	  scopes: ['user-read-email', 'playlist-modify-public'],
+	// 	  // To follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
+	// 	  // this must be set to false
+	// 	  usePKCE: false,
+	// 	  redirectUri: makeRedirectUri({
+	// 		scheme: 'crack-scheme'
+	// 	  }),
+	// 	},
+	// 	discovery,
+	//   );
+	  
+	//   React.useEffect(() => {
+	// 	const fetchUserInfo = async () => {
+	// 	  if (response?.type === 'success') {
+	// 		const { code } = response.params;
+	  
+	// 		// Exchange authorization code for access token
+	// 		const tokenResponse = await axios.post('https://accounts.spotify.com/api/token', {
+	// 		  grant_type: 'authorization_code',
+	// 		  code: code,
+	// 		  redirect_uri: makeRedirectUri({
+	// 			scheme: 'crack-scheme'
+	// 		  }),
+	// 		  client_id: process.env.clientID,
+	// 		  // Add client secret if required by Spotify
+	// 		});
+	  
+	// 		// Use access token to fetch user information
+	// 		const userInfo = await axios.get('https://api.spotify.com/v1/me', {
+	// 		  headers: {
+	// 			'Authorization': `Bearer ${tokenResponse.data.access_token}`
+	// 		  }
+	// 		});
+	  
+	// 		// Update state with user information
+	// 		setUserInfo(userInfo.data);
+	// 	  }
+	// 	};
+	  
+	// 	fetchUserInfo();
+	//   }, [response]);  
+    //   handleSpotifyLogin = async () => {
+    //     let redirectUrl = AuthSession.makeRedirectUri({
+	// 		scheme: 'my-scheme',
+    //       	path: 'redirect'
+	// 		// preferLocalhost: true,
+	// 	});
+    //     let results = await AuthSession.startAsync({
+    //         authUrl:
+    //         `https://accounts.spotify.com/authorize?client_id=${process.env.clientID}
+    //         &redirect_uri=${encodeURIComponent(redirectUrl)}
+    //         &scope=user-read-email&response_type=token`
+    //     });
+    //     if (results.type !== 'success') {
+    //       this.setState({ didError: true });
+    //     } else {
+    //       const userInfo = await axios.get(`https://api.spotify.com/v1/me`, {
+    //         headers: {
+    //           "Authorization": `Bearer ${results.params.access_token}`
+    //         }
+    //       });
+    //       this.setState({ userInfo: userInfo.data });
+    //     }
+    //   };
+    
+	const [request, response, promptAsync] = useAuthRequest(
+		{
+		  clientId: "db4013f57fab4cc087802fb9acdc4906",
+		  scopes: ['user-read-email', 'playlist-modify-public'],
+		  // To follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
+		  // this must be set to false
+		  usePKCE: false,
+		  redirectUri: makeRedirectUri({
+			scheme: 'crack-scheme',
+			// path: "/components/Home.js",
+			preferLocalhost: true
+		  }),
+		},
+		discovery
+	  );
+	
+	  React.useEffect(() => {
+		if (response?.type === 'success') {
+		  const { code } = response.params;
+		}
+	  }, [response]);
+
+	  return (
+		<View style={styles.container}>
+			<Button 
+				style={styles.button}
+				disabled={!request}
+				title="Login"
+				onPress={() => {
+					promptAsync();
+				}}
+			/>
+		</View>
+    //   displayError = () => {
+    //     return (
+    //       <View style={styles.userInfo}>
+    //         <Text style={styles.errorText}>
+    //           There was an error, please try again.
+    //         </Text>
+    //       </View>
+    //     );
+    //   }
+    
+    //   displayResults = () => {
+    //     { return this.state.userInfo ? (
+    //       <View style={styles.userInfo}>
+    //         <Image
+    //           style={styles.profileImage}
+    //           source={ {'uri': this.state.userInfo.images[0].url} }
+    //         />
+    //         <View>
+    //           <Text style={styles.userInfoText}>
+    //             Username:
+    //           </Text>
+    //           <Text style={styles.userInfoText}>
+    //             {this.state.userInfo.id}
+    //           </Text>
+    //           <Text style={styles.userInfoText}>
+    //             Email:
+    //           </Text>
+    //           <Text style={styles.userInfoText}>
+    //             {this.state.userInfo.email}
+    //           </Text>
+    //         </View>
+    //       </View>
+    //     ) : (
+    //       <View style={styles.userInfo}>
+    //         <Text style={styles.userInfoText}>
+    //           Login to Spotify to see user data.
+    //         </Text>
+    //       </View>
+    //     )}
+    //   }
+
+    
+        // <View style={styles.container}>
+        //     <FontAwesome
+        //         name="spotify"
+        //         color="#2FD566"
+        //         size={128}
+        // />
+        // <TouchableOpacity
+        //     style={styles.button}
+        //     onPress={promptAsync}
+        //     disabled={this.state.userInfo ? true : false}
+        // >
+        //     <Text style={styles.buttonText}>
+        //         Login with Spotify
+        //     </Text>
+        // </TouchableOpacity>
+        // {this.state.didError ?
+        //     this.displayError() :
+        //     this.displayResults()
+        // }
+        // </View>
+    );
+
+
+
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen
@@ -119,6 +273,8 @@ export default function App() {
                         }, 
                     }}
                 />
+				</Stack.Navigator>
+        </NavigationContainer>
                 {/* <Stack.Screen
                     name="Stack"
                     component={StackScreen}
@@ -130,9 +286,7 @@ export default function App() {
                 /> */}
                 {/* <Stack.Screen name="Home" component={HomeScreen}/> */}
                 {/* <Stack.Screen name="Details" component={DetailsScreen} initialParams={{itemId: 42}}/> */}
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+            
 }
 
 //   const styles = StyleSheet.create({
@@ -143,3 +297,39 @@ export default function App() {
 //       justifyContent: 'center',
 //     },
 //   });
+
+const styles = StyleSheet.create({
+    container: {
+      flexDirection: 'column',
+      backgroundColor: '#000',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'space-evenly',
+    },
+    button: {
+      backgroundColor: '#2FD566',
+      padding: 20
+    },
+    buttonText: {
+      color: '#000',
+      fontSize: 20
+    },
+    userInfo: {
+      height: 250,
+      width: 200,
+      alignItems: 'center',
+    },
+    userInfoText: {
+      color: '#fff',
+      fontSize: 18
+    },
+    errorText: {
+      color: '#fff',
+      fontSize: 18
+    },
+    profileImage: {
+      height: 64,
+      width: 64,
+      marginBottom: 32
+    }
+  });

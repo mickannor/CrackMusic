@@ -1,4 +1,6 @@
 import { AuthSession } from 'expo';
+import { getSpotifyCredentials } from './getSpotifyCredential';
+import { makeRedirectUri } from 'expo-auth-session';
 
 const scopesArr = [
 	'user-modify-playback-state','user-read-currently-playing','user-read-playback-state','user-library-modify',
@@ -9,10 +11,13 @@ const scopesArr = [
 ];
 const scopes = scopesArr.join(' ');
 
-const getAuthorizationCode = async () => {
+export const getAuthorizationCode = async () => {
 	try {
 		const credentials = await getSpotifyCredentials() //we wrote this function above
-		const redirectUrl = AuthSession.getRedirectUrl(); //this will be something like https://auth.expo.io/@your-username/your-app-slug
+		const redirectUrl = AuthSession.makeRedirectUri({
+			scheme: 'scheme2',
+			preferLocalhost: true,
+		}); //this will be something like https://auth.expo.io/@your-username/your-app-slug
 		const result = await AuthSession.startAsync({
 		authUrl:
 			'https://accounts.spotify.com/authorize' +
@@ -23,8 +28,8 @@ const getAuthorizationCode = async () => {
 			'&redirect_uri=' +
 			encodeURIComponent(redirectUrl),
 		})
+		return result.params.code
 	} catch (err) {
 		console.error(err)
 	}
-	return result.params.code
 }

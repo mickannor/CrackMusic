@@ -1,6 +1,6 @@
 import { encode as btoa } from 'base-64';
 
-const getTokens = async () => {
+export const getTokens = async () => {
 	try {
 		const authorizationCode = await getAuthorizationCode() //we wrote this function above
 		const credentials = await getSpotifyCredentials() //we wrote this function above (could also run this outside of the functions and store the credentials in local scope)
