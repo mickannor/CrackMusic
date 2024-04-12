@@ -8,6 +8,7 @@ import { getAuthorizationCode } from './backend/getAuthorizationCode';
 import { TouchableOpacity} from 'react-native';
 import * as AuthSession from 'expo-auth-session';
 import { FontAwesome } from '@expo/vector-icons';
+import Login from './components/Login';
 
 // function HomeScreen({navigation}) {
 //     return (
@@ -50,43 +51,6 @@ import { FontAwesome } from '@expo/vector-icons';
 // }
 
 const Stack = createNativeStackNavigator();
-
-import * as React from 'react';
-import * as WebBrowser from 'expo-web-browser';
-import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
-
-
-WebBrowser.maybeCompleteAuthSession();
-
-// Endpoint
-const discovery = {
-  authorizationEndpoint: 'https://accounts.spotify.com/authorize',
-  tokenEndpoint: 'https://accounts.spotify.com/api/token',
-};
-
-state = {
-	userInfo: null,
-	didError: false
-  };
-  
-
-
-  
-
-  
-
-// return (
-//     <Button
-//       disabled={!request}
-//       title="Login"
-//       onPress={() => {
-//         promptAsync();
-//       }}
-//     />
-//   );
-
-
-
 
 
 export default function App() {
@@ -157,40 +121,44 @@ export default function App() {
     //       this.setState({ userInfo: userInfo.data });
     //     }
     //   };
-    
-	const [request, response, promptAsync] = useAuthRequest(
-		{
-		  clientId: "db4013f57fab4cc087802fb9acdc4906",
-		  scopes: ['user-read-email', 'playlist-modify-public'],
-		  // To follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
-		  // this must be set to false
-		  usePKCE: false,
-		  redirectUri: makeRedirectUri({
-			scheme: 'crack-scheme',
-			// path: "/components/Home.js",
-			preferLocalhost: true
-		  }),
-		},
-		discovery
-	  );
-	
-	  React.useEffect(() => {
-		if (response?.type === 'success') {
-		  const { code } = response.params;
-		}
-	  }, [response]);
+  
 
 	  return (
-		<View style={styles.container}>
-			<Button 
-				style={styles.button}
-				disabled={!request}
-				title="Login"
-				onPress={() => {
-					promptAsync();
-				}}
-			/>
-		</View>
+
+		<NavigationContainer>
+            <Stack.Navigator>
+				<Stack.Screen
+                    name="Login"
+                    component={Login}
+                    // options={{
+                    //     title: 'My home',
+                    //     headerStyle: {
+                    //         backgroundColor: '#1DB954',
+                    //     },
+                    //     headerTintColor: '#000',
+                    //     headerTitleStyle: {
+                    //         fontWeight: 'bold',
+                    //     }, 
+                    // }}
+                />
+                <Stack.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{
+                        title: 'My home',
+                        headerStyle: {
+                            backgroundColor: '#1DB954',
+                        },
+                        headerTintColor: '#000',
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                        }, 
+                    }}
+                />
+			</Stack.Navigator>
+        </NavigationContainer>
+		
+    
     //   displayError = () => {
     //     return (
     //       <View style={styles.userInfo}>
@@ -257,35 +225,18 @@ export default function App() {
 
 
 
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name="Home"
-                    component={HomeScreen}
-                    options={{
-                        title: 'My home',
-                        headerStyle: {
-                            backgroundColor: '#1DB954',
-                        },
-                        headerTintColor: '#000',
-                        headerTitleStyle: {
-                            fontWeight: 'bold',
-                        }, 
-                    }}
-                />
-				</Stack.Navigator>
-        </NavigationContainer>
-                {/* <Stack.Screen
+        
+                {<Stack.Screen
                     name="Stack"
                     component={StackScreen}
-                /> */}
-                {/* <Stack.Screen
+                />}
+                {<Stack.Screen
                     name="Profile"
                     component={ProfileScreen}
                     options={({ route }) => ({ title: route.params.name })}
-                /> */}
-                {/* <Stack.Screen name="Home" component={HomeScreen}/> */}
-                {/* <Stack.Screen name="Details" component={DetailsScreen} initialParams={{itemId: 42}}/> */}
+                /> }
+                { <Stack.Screen name="Home" component={HomeScreen}/> }
+                {<Stack.Screen name="Details" component={DetailsScreen} initialParams={{itemId: 42}}/> }
             
 }
 
@@ -298,38 +249,3 @@ export default function App() {
 //     },
 //   });
 
-const styles = StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      backgroundColor: '#000',
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'space-evenly',
-    },
-    button: {
-      backgroundColor: '#2FD566',
-      padding: 20
-    },
-    buttonText: {
-      color: '#000',
-      fontSize: 20
-    },
-    userInfo: {
-      height: 250,
-      width: 200,
-      alignItems: 'center',
-    },
-    userInfoText: {
-      color: '#fff',
-      fontSize: 18
-    },
-    errorText: {
-      color: '#fff',
-      fontSize: 18
-    },
-    profileImage: {
-      height: 64,
-      width: 64,
-      marginBottom: 32
-    }
-  });
