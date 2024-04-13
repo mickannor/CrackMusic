@@ -1,3 +1,4 @@
+import { registerRootComponent } from 'expo';
 import { Button, StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -5,9 +6,8 @@ import HomeScreen from './components/Home';
 import StackScreen from './components/StackScreen';
 import axios from 'axios'
 import { getAuthorizationCode } from './backend/getAuthorizationCode';
-import { TouchableOpacity} from 'react-native';
 import * as AuthSession from 'expo-auth-session';
-import { FontAwesome } from '@expo/vector-icons';
+
 import Login from './components/Login';
 
 // function HomeScreen({navigation}) {
@@ -128,24 +128,23 @@ export default function App() {
 		<NavigationContainer>
             <Stack.Navigator>
 				<Stack.Screen
-                    name="Login"
+                    name=" "
                     component={Login}
-                    // options={{
-                    //     title: 'My home',
-                    //     headerStyle: {
-                    //         backgroundColor: '#1DB954',
-                    //     },
-                    //     headerTintColor: '#000',
-                    //     headerTitleStyle: {
-                    //         fontWeight: 'bold',
-                    //     }, 
-                    // }}
+                    options={{
+                        headerStyle: {
+                            backgroundColor: '#1DB954',
+                        },
+                        headerTintColor: '#000',
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                        }, 
+                    }}
                 />
                 <Stack.Screen
                     name="Home"
                     component={HomeScreen}
                     options={{
-                        title: 'My home',
+                        title: 'Home',
                         headerStyle: {
                             backgroundColor: '#1DB954',
                         },
@@ -159,93 +158,35 @@ export default function App() {
         </NavigationContainer>
 		
     
-    //   displayError = () => {
-    //     return (
-    //       <View style={styles.userInfo}>
-    //         <Text style={styles.errorText}>
-    //           There was an error, please try again.
-    //         </Text>
-    //       </View>
-    //     );
-    //   }
     
-    //   displayResults = () => {
-    //     { return this.state.userInfo ? (
-    //       <View style={styles.userInfo}>
-    //         <Image
-    //           style={styles.profileImage}
-    //           source={ {'uri': this.state.userInfo.images[0].url} }
-    //         />
-    //         <View>
-    //           <Text style={styles.userInfoText}>
-    //             Username:
-    //           </Text>
-    //           <Text style={styles.userInfoText}>
-    //             {this.state.userInfo.id}
-    //           </Text>
-    //           <Text style={styles.userInfoText}>
-    //             Email:
-    //           </Text>
-    //           <Text style={styles.userInfoText}>
-    //             {this.state.userInfo.email}
-    //           </Text>
-    //         </View>
-    //       </View>
-    //     ) : (
-    //       <View style={styles.userInfo}>
-    //         <Text style={styles.userInfoText}>
-    //           Login to Spotify to see user data.
-    //         </Text>
-    //       </View>
-    //     )}
-    //   }
 
     
-        // <View style={styles.container}>
-        //     <FontAwesome
-        //         name="spotify"
-        //         color="#2FD566"
-        //         size={128}
-        // />
-        // <TouchableOpacity
-        //     style={styles.button}
-        //     onPress={promptAsync}
-        //     disabled={this.state.userInfo ? true : false}
-        // >
-        //     <Text style={styles.buttonText}>
-        //         Login with Spotify
-        //     </Text>
-        // </TouchableOpacity>
-        // {this.state.didError ?
-        //     this.displayError() :
-        //     this.displayResults()
-        // }
-        // </View>
+        
     );
 
 
 
         
-                {<Stack.Screen
-                    name="Stack"
-                    component={StackScreen}
-                />}
-                {<Stack.Screen
-                    name="Profile"
-                    component={ProfileScreen}
-                    options={({ route }) => ({ title: route.params.name })}
-                /> }
-                { <Stack.Screen name="Home" component={HomeScreen}/> }
-                {<Stack.Screen name="Details" component={DetailsScreen} initialParams={{itemId: 42}}/> }
+                // {<Stack.Screen
+                //     name="Stack"
+                //     component={StackScreen}
+                // />}
+                // {<Stack.Screen
+                //     name="Profile"
+                //     component={ProfileScreen}
+                //     options={({ route }) => ({ title: route.params.name })}
+                // /> }
+                // { <Stack.Screen name="Home" component={HomeScreen}/> }
+                // {<Stack.Screen name="Details" component={DetailsScreen} initialParams={{itemId: 42}}/> }
             
 }
 
-//   const styles = StyleSheet.create({
-//     container: {
-//       flex: 1,
-//       backgroundColor: '',
-//       alignItems: 'center',
-//       justifyContent: 'center',
-//     },
-//   });
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
 

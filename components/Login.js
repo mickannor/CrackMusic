@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Redirect } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
+import { TouchableOpacity} from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import { Button, StyleSheet, View } from "react-native";
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
 
@@ -11,7 +13,7 @@ const discovery = {
     tokenEndpoint: 'https://accounts.spotify.com/api/token',
 };
 
-export default function Login () {
+export default function Login({navigation}) {
     const redirectUri = makeRedirectUri({
         scheme: 'crack-scheme',
         path: "components/Home",
@@ -40,6 +42,16 @@ export default function Login () {
     
     return (
         <View style={styles.container}>
+            <FontAwesome
+                name="spotify"
+                color="#1DB954"
+                size={128}
+                alignItems="center"
+            />
+            <TouchableOpacity
+                style={styles.button}
+                onPress={promptAsync}
+            >
             <Button 
                 style={styles.button}
                 disabled={!request}
@@ -48,7 +60,8 @@ export default function Login () {
                     promptAsync();
                 }}
             />
-        </View>
+            </TouchableOpacity>
+        </View> 
     );
 }
 
@@ -58,28 +71,15 @@ const styles = StyleSheet.create({
       backgroundColor: '#000',
       flex: 1,
       alignItems: 'center',
-      justifyContent: 'space-evenly',
+      justifyContent: 'center',
     },
     button: {
-      backgroundColor: '#2FD566',
+      backgroundColor: '#1DB954',
       padding: 20
     },
     buttonText: {
       color: '#000',
       fontSize: 20
-    },
-    userInfo: {
-      height: 250,
-      width: 200,
-      alignItems: 'center',
-    },
-    userInfoText: {
-      color: '#fff',
-      fontSize: 18
-    },
-    errorText: {
-      color: '#fff',
-      fontSize: 18
     },
     profileImage: {
       height: 64,
