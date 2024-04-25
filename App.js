@@ -1,136 +1,64 @@
-import { registerRootComponent } from 'expo';
-import { Button, StyleSheet, View, Text } from 'react-native';
+import { Button, StyleSheet, View, Text, Pressable } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './components/Home';
-import StackScreen from './components/StackScreen';
+import { Avatar } from 'react-native-paper'
 import axios from 'axios'
 import { getAuthorizationCode } from './backend/getAuthorizationCode';
 import * as AuthSession from 'expo-auth-session';
+// import Login from './components/Login';
+// import Screen from './components/Screen';
+import HomeScreen from './components/HomeScreen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import 'react-native-gesture-handler';
+import Settings from './components/Settings';
 
-import Login from './components/Login';
+// import createDrawerNavigation 
+// const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+const HomeStack = createNativeStackNavigator();
 
-// function HomeScreen({navigation}) {
+import HomeDrawer from './components/HomeDrawer';
+// function Profile() {
 //     return (
-//         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-//             <Text style={{ color: '#1DB954'}}>Home Screen</Text>
-//             <Button title="Go to Details" onPress={() => navigation.navigate('Details', {itemId: 86, otherParam: 'anything you want',})}/>
-//         </View>
-//     )
-// // }
-// function StackScreen() {
-//     return (
-//       <Stack.Navigator>
-//         <Stack.Screen
-//           name="Home"
-//           component={HomeScreen}
-//           options={{ title: 'My home' }}
-//         />
-//         <Stack.Screen
-//           name="Profile"
-//           component={ProfileScreen}
-//           options={({ route }) => ({ title: route.params.name })}
-//         />
-//       </Stack.Navigator>
-//     );
-//   }
-
-// function DetailsScreen({route, navigation}) {
-//     const {itemId, otherParam} = route.params;
-//     return (
-//         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-//             <Text>Details Screen</Text>
-//             <Text>itemId: {JSON.stringify(itemId)}</Text>
-//             <Text>otherParam: {JSON.stringify(otherParam)}</Text>
-//             <Button title="Go to Details... again" onPress={() => navigation.push('Details', {itemId: Math.floor(Math.random() * 100),})}/>
-//             <Button title="Go to Home" onPress={() => navigation.navigate('Home')}/>
-//             <Button title="Go back" onPress={() => navigation.goBack()}/>
-//             <Button title="Go back to the first screen in stack" onPress={() => navigation.popToTop()}/>
-//         </View>
+//         <Drawer.Navigator
+//             screenOptions={({ navigation }) => ({
+//                 headerLeft: () => 
+//                     <Pressable onPress={navigation.toggleDrawer}>
+//                         <Text>
+//                             <Avatar.Text size={32} label="P"/>
+//                         </Text>
+//                     </Pressable>,
+//                 backgroundColor: "#"
+//             })}
+//         >
+//             <Drawer.Screen 
+//                 name= "Settings" 
+//                 component={HomeScreen} 
+//                 options={{
+//                     headerTitleStyle: {
+//                         display: "none"
+//                     }
+//                 }}
+//             />
+//             <Drawer.Screen 
+//                 name= "s" 
+//                 component={HomeScreen} 
+//             />
+//         </Drawer.Navigator>
 //     )
 // }
 
-const Stack = createNativeStackNavigator();
 
 
 export default function App() {
-	// const [request, response, promptAsync] = useAuthRequest(
-	// 	{
-	// 	  clientId: process.env.clientID,
-	// 	  scopes: ['user-read-email', 'playlist-modify-public'],
-	// 	  // To follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
-	// 	  // this must be set to false
-	// 	  usePKCE: false,
-	// 	  redirectUri: makeRedirectUri({
-	// 		scheme: 'crack-scheme'
-	// 	  }),
-	// 	},
-	// 	discovery,
-	//   );
-	  
-	//   React.useEffect(() => {
-	// 	const fetchUserInfo = async () => {
-	// 	  if (response?.type === 'success') {
-	// 		const { code } = response.params;
-	  
-	// 		// Exchange authorization code for access token
-	// 		const tokenResponse = await axios.post('https://accounts.spotify.com/api/token', {
-	// 		  grant_type: 'authorization_code',
-	// 		  code: code,
-	// 		  redirect_uri: makeRedirectUri({
-	// 			scheme: 'crack-scheme'
-	// 		  }),
-	// 		  client_id: process.env.clientID,
-	// 		  // Add client secret if required by Spotify
-	// 		});
-	  
-	// 		// Use access token to fetch user information
-	// 		const userInfo = await axios.get('https://api.spotify.com/v1/me', {
-	// 		  headers: {
-	// 			'Authorization': `Bearer ${tokenResponse.data.access_token}`
-	// 		  }
-	// 		});
-	  
-	// 		// Update state with user information
-	// 		setUserInfo(userInfo.data);
-	// 	  }
-	// 	};
-	  
-	// 	fetchUserInfo();
-	//   }, [response]);  
-    //   handleSpotifyLogin = async () => {
-    //     let redirectUrl = AuthSession.makeRedirectUri({
-	// 		scheme: 'my-scheme',
-    //       	path: 'redirect'
-	// 		// preferLocalhost: true,
-	// 	});
-    //     let results = await AuthSession.startAsync({
-    //         authUrl:
-    //         `https://accounts.spotify.com/authorize?client_id=${process.env.clientID}
-    //         &redirect_uri=${encodeURIComponent(redirectUrl)}
-    //         &scope=user-read-email&response_type=token`
-    //     });
-    //     if (results.type !== 'success') {
-    //       this.setState({ didError: true });
-    //     } else {
-    //       const userInfo = await axios.get(`https://api.spotify.com/v1/me`, {
-    //         headers: {
-    //           "Authorization": `Bearer ${results.params.access_token}`
-    //         }
-    //       });
-    //       this.setState({ userInfo: userInfo.data });
-    //     }
-    //   };
-  
-
-	  return (
-
+	return (
 		<NavigationContainer>
-            <Stack.Navigator>
-				<Stack.Screen
-                    name=" "
-                    component={Login}
+            {/* <HomeStack.Navigator>
+                <HomeStack.Screen
+                    name="PAGE"
+                    component={Profile}
                     options={{
+                        title: '',
                         headerStyle: {
                             backgroundColor: '#1DB954',
                         },
@@ -140,45 +68,10 @@ export default function App() {
                         }, 
                     }}
                 />
-                <Stack.Screen
-                    name="Home"
-                    component={HomeScreen}
-                    options={{
-                        title: 'Home',
-                        headerStyle: {
-                            backgroundColor: '#1DB954',
-                        },
-                        headerTintColor: '#000',
-                        headerTitleStyle: {
-                            fontWeight: 'bold',
-                        }, 
-                    }}
-                />
-			</Stack.Navigator>
-        </NavigationContainer>
-		
-    
-    
-
-    
-        
-    );
-
-
-
-        
-                // {<Stack.Screen
-                //     name="Stack"
-                //     component={StackScreen}
-                // />}
-                // {<Stack.Screen
-                //     name="Profile"
-                //     component={ProfileScreen}
-                //     options={({ route }) => ({ title: route.params.name })}
-                // /> }
-                // { <Stack.Screen name="Home" component={HomeScreen}/> }
-                // {<Stack.Screen name="Details" component={DetailsScreen} initialParams={{itemId: 42}}/> }
-            
+            </HomeStack.Navigator>  */}
+            <HomeDrawer/>
+        </NavigationContainer>        
+    );      
 }
 
   const styles = StyleSheet.create({

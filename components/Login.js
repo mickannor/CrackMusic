@@ -5,6 +5,8 @@ import { TouchableOpacity} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Button, StyleSheet, View } from "react-native";
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
+import Home from './Home';
+
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -36,7 +38,7 @@ export default function Login({navigation}) {
         if (response?.type === 'success') {
             const { code } = response.params;
             navigation.navigate('Home');
-            console.log(code);
+            // console.log(code);
         }
     }, [response]);
     
