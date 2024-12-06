@@ -1,18 +1,21 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import HomeStack from "./HomeStack";
+// import HomeStack from "./HomeStack";
 import HomeTab from "./HomeTabs";
+
 import Home from "./Home";
 import Settings from "./Settings";
 import { Button, StyleSheet, View, Text, Pressable } from 'react-native';
 import { Avatar } from 'react-native-paper'
 import SettingsStack from "./Settings";
+import HomeStack from "./HomeStack";
 
 const Drawer = createDrawerNavigator(); 
 
 export default function HomeDrawer() {
     return (
         <Drawer.Navigator
+            initialRouteName="Settings"
             screenOptions={({ navigation }) => ({
                 headerLeft: () => 
                     <Pressable onPress={navigation.toggleDrawer}>
@@ -23,7 +26,7 @@ export default function HomeDrawer() {
                 // backgroundColor: "#1DB954"
             })}
         >
-            <Drawer.Screen 
+            {/* <Drawer.Screen 
                 name= "Hom" 
                 component={HomeTab} 
                 options={{
@@ -35,7 +38,7 @@ export default function HomeDrawer() {
                         fontWeight: 'bold',
                     }, 
                 }}
-            />
+            /> */}
             <Drawer.Screen 
                 name= "Settings" 
                 component={HomeTab} 

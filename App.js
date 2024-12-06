@@ -7,7 +7,7 @@ import { getAuthorizationCode } from './backend/getAuthorizationCode';
 import * as AuthSession from 'expo-auth-session';
 // import Login from './components/Login';
 // import Screen from './components/Screen';
-import HomeScreen from './components/HomeScreen';
+// import HomeScreen from './components/HomeScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 import Settings from './components/Settings';
@@ -15,9 +15,10 @@ import Settings from './components/Settings';
 // import createDrawerNavigation 
 // const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
-const HomeStack = createNativeStackNavigator();
-
+// const HomeStack = createNativeStackNavigator();
+import HomeStack from './components/HomeStack';
 import HomeDrawer from './components/HomeDrawer';
+import HomeTab from './components/HomeTabs';
 // function Profile() {
 //     return (
 //         <Drawer.Navigator
@@ -69,7 +70,7 @@ export default function App() {
                     }}
                 />
             </HomeStack.Navigator>  */}
-            <HomeDrawer/>
+            <HomeStack/>
         </NavigationContainer>        
     );      
 }

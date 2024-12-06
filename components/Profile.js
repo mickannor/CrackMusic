@@ -1,16 +1,19 @@
 import * as React from 'react';
-import { Button, View } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
-
-const Drawer = createDrawerNavigator();
+import { Button, StyleSheet, View, Text } from 'react-native';
 
 export default function Profile() {
-  return (
-    <Drawer.Navigation>
-      
-    </Drawer.Navigation>
-  )
+    return (
+        <View style={styles.container}>
+            <Text>Profile</Text>
+        </View>
+    );
 }
 
-
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    //   backgroundColor: '#212121',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+});
